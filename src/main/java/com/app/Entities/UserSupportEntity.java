@@ -6,7 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import Helpers.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -16,14 +19,17 @@ import lombok.Setter;
 
 @Entity
 @Data
+@Table(name = "user_support")
 public class UserSupportEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int supportId;
 	@JoinColumn(name = "userId")
-	private User user;
+	@ManyToOne
+	private UserEntity user;
+	@ManyToOne
 	@JoinColumn(name = "bookingId")
-	private Booking booking;
+	private BookingEntity booking;
 	private Status status;
 	@Column(length = 255, nullable = false)
 	private String description;

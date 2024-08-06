@@ -14,6 +14,6 @@ import lombok.ToString;
 @Setter
 @Table(name="admin")
 @ToString(callSuper = true)
-public class Admin extends UserBaseEntity {
+public class AdminEnitity extends UserBaseEntity {
 
 }
