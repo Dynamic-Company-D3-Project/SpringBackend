@@ -15,9 +15,7 @@ import Helpers.AddressTypeEnum;
 import lombok.*;
 
 
-@Builder
-@Getter
-@Setter
+
 @Entity
 public class AddressEntitiy {
 @Id
@@ -25,7 +23,7 @@ public class AddressEntitiy {
 
 @ManyToOne(fetch = FetchType.EAGER)
 @JoinColumn(name = "userId")
- private User user;
+ private UserEntity user;
  private String street;
  
  @Enumerated(EnumType.STRING)
