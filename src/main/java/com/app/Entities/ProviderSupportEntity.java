@@ -13,6 +13,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import Helpers.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -21,12 +24,14 @@ import lombok.Setter;
 
 @Entity
 @Data
+@Table(name = "provider_support")
 public class ProviderSupportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supportId; 
+    @ManyToOne
     @JoinColumn(name = "bookingId")
-    private Booking booking; 
+    private BookingEntity booking; 
     @Column(length = 100, nullable = false)
     private String supportType;
     @Column(length = 255,nullable = false)

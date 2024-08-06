@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import Helpers.BookingStatus;
+
 @Entity
 @Table(name="bookings")
 public class BookingEntity {
