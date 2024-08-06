@@ -5,29 +5,24 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
-@Builder
-@Getter
-@Setter
-
+@Data
 public class CategoryEntity {
- @Id
- private Long id;
- private String name;
- @Column(name = "description", columnDefinition = "TEXT")
- private String description;
- private String imageUrl;
- 
- @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryEntity", cascade = CascadeType.ALL)
- private List<SubCategory> subCategoryList;
- 
- 
+	 @Id
+	 @GeneratedValue(strategy = GenerationType.IDENTITY)
+	 private Long id;
+	 @Column(length = 25, nullable = false)
+	 private String name;
+	 @Column(length = 255)
+	 private String description;
+	 private String imageUrl;
+	 @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+	 private List<SubCategoryEntity> subCategories;
 }
