@@ -32,7 +32,7 @@ public class AddressEntitiy {
  private AddressTypeEnum addressType;
  @Column(nullable = false,length = 6)
  private Long pincode;
- 
+ @Column(name="house_no")
  private Long houseNo;
  @Column(nullable = false)
  private String state; 
