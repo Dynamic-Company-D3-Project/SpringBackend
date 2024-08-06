@@ -21,7 +21,7 @@ import lombok.*;
 @Entity
 public class AddressEntitiy {
 @Id
- private Long addressId;
+ private Long addressId;	
 
 @ManyToOne(fetch = FetchType.EAGER)
 @JoinColumn(name = "userId")
@@ -30,15 +30,12 @@ public class AddressEntitiy {
  
  @Enumerated(EnumType.STRING)
  private AddressTypeEnum addressType;
- 
+ @Column(nullable = false,length = 6)
  private Long pincode;
  @Column(name="house_no")
  private Long houseNo;
- private String state;
- 
+ @Column(nullable = false)
+ private String state; 
  private String country;
- 
  private String city;
- 
- 
 }
