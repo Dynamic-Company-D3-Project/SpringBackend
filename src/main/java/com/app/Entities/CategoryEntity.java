@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringExclude;
+
 import lombok.Data;
 
 @Entity
@@ -27,5 +29,6 @@ public class CategoryEntity {
 	 private String description;
 	 private String imageUrl;
 	 @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+	 @ToStringExclude
 	 private List<SubCategoryEntity> subCategories;
 }
