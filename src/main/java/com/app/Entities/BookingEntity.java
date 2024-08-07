@@ -15,9 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import Helpers.BookingStatus;
+import lombok.Data;
 
 @Entity
 @Table(name="bookings")
+@Data
 public class BookingEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
