@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,8 +30,8 @@ import lombok.Setter;
 public class SubCategoryEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	@ManyToOne
+	private Long id;
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id", nullable = false)
 	private CategoryEntity category;
 	@Column(length = 25)
