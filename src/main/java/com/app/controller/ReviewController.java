@@ -19,6 +19,6 @@ public class ReviewController {
 	@GetMapping("/{subCatId}")
 	public ResponseEntity<?> getReviewsBySubCat(@PathVariable Long subCatId){
 		System.out.println("get review "+subCatId);
-		return ResponseEntity.status(HttpStatus.FOUND).body(reviewService.getReviews(subCatId));
+		return ResponseEntity.ok().body(reviewService.getReviews(subCatId));
 	}
 }
