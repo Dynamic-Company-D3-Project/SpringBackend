@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import Helpers.Gender;
@@ -42,7 +43,7 @@ private Gender gender;
 @CreationTimestamp
 @Column(name="creation_time")
 private LocalDateTime creationTime;
-@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+@UpdateTimestamp
 @Column(name="last_login_time")
 private LocalDateTime lastLoginTime;
 }
