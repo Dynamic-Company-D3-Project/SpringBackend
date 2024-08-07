@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.Entities.AddressEntity;
+import com.app.dto.AddressDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserLoginDto;
 import com.app.dto.UserPostDto;
@@ -56,4 +58,10 @@ public class UserController {
 	{
 		return ResponseEntity.ok().body(userService.updateUser(newUser, id));
 	}
+	@PostMapping("/address/{id}")
+	@Operation(summary = "add address of user")
+	public ResponseEntity<?> addAddress(@RequestBody AddressDto addressDto, @PathVariable Long id){
+		return ResponseEntity.ok().body(userService.addAddress(addressDto, id));
+	}
+	
 }
