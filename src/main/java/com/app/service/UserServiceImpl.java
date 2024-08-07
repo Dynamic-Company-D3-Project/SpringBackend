@@ -8,10 +8,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.Entities.AddressEntity;
 import com.app.Entities.UserEntity;
 import com.app.custom_exceptions.ApiException;
 import com.app.custom_exceptions.ResourceNotFoundException;
+import com.app.dao.AddressDao;
 import com.app.dao.UserDao;
+import com.app.dto.AddressDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserLoginDto;
 import com.app.dto.UserPostDto;
@@ -21,7 +24,8 @@ import com.app.dto.UserPostDto;
 public class UserServiceImpl implements UserService {
 @Autowired
 private UserDao userDao;
-
+@Autowired
+private AddressDao addressDao;
 @Autowired
 private ModelMapper modelMapper;
 @Override
@@ -34,6 +38,8 @@ public UserDto addNewUser(UserDto userDto) {
 	}
 	throw new ApiException("Password does matched");
 }
+
+
 @Override
 public UserDto loginUser(UserLoginDto userLoginDto) {
 	String emailString = userLoginDto.getEmail();
@@ -63,4 +69,17 @@ public UserPostDto updateUser(UserPostDto newUser,Long id) {
 	
 	return modelMapper.map(userDao.save(userEntity), UserPostDto.class);
 }
+
+
+@Override
+public AddressDto addAddress(AddressDto addressDto, Long id) {
+	UserEntity entity = userDao.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+	if(entity != null) {
+		AddressEntity addressEntity = modelMapper.map(addressDto, AddressEntity.class);
+		addressEntity.setUser(entity);
+		addressDao.save(addressEntity);
+		return addressDto;
+	}
+	return null;
+  }
 }
