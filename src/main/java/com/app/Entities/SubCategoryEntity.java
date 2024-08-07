@@ -14,12 +14,14 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor
@@ -27,12 +29,14 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name="subcategory")
+@ToString
 public class SubCategoryEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id", nullable = false)
+	@ToStringExclude
 	private CategoryEntity category;
 	@Column(length = 25)
 	private String categoryName;
@@ -46,4 +50,8 @@ public class SubCategoryEntity {
 	private int isVisible;
 	@UpdateTimestamp
 	private LocalDate lastUpdated;
+
+	
+	
+	
 }

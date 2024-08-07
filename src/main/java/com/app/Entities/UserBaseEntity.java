@@ -38,6 +38,7 @@ private String password;
 private String email;
 @Column(length = 20,name="phone_number")
 private String phoneNumber;
+
 @Enumerated(EnumType.STRING)
 private Gender gender;
 @CreationTimestamp
