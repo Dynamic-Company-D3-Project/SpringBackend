@@ -1,5 +1,6 @@
 	package com.app.Entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,13 +13,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.ToStringExclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
 @Table(name = "category")
+@ToString(callSuper = true)
 public class CategoryEntity {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +32,5 @@ public class CategoryEntity {
 	 private String description;
 	 private String imageUrl;
 	 @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-	 @ToStringExclude
-	 private List<SubCategoryEntity> subCategories;
+	 private List<SubCategoryEntity> subCategories= new ArrayList<SubCategoryEntity>();
 }

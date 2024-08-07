@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringExclude;
 
+import Helpers.OrderStatus;
 import lombok.Data;
 
 import lombok.NoArgsConstructor;

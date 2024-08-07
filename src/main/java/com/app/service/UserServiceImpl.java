@@ -14,6 +14,7 @@ import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dao.UserDao;
 import com.app.dto.UserDto;
 import com.app.dto.UserLoginDto;
+import com.app.dto.UserPostDto;
 
 @Service
 @Transactional
@@ -40,5 +41,26 @@ public UserDto loginUser(UserLoginDto userLoginDto) {
 	UserEntity user = userDao.findByEmailAndPassword(emailString, passwordString).orElseThrow(()-> new ResourceNotFoundException("User not found"));
 	UserDto userDto = modelMapper.map(user, UserDto.class);
 	return userDto;
+}
+@Override
+public String updatePassword(String email, String newPassword) {
+	UserEntity userEntity=userDao.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("email does not match"));
+	userEntity.setPassword(newPassword);
+	if(userDao.save(userEntity)!=null)
+	return "password changed successfully";
+	else {
+	return null;
+	}
+}
+@Override
+public UserPostDto updateUser(UserPostDto newUser,Long id) {
+	UserEntity userEntity=userDao.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
+	userEntity.setFirstName(newUser.getFirstName());
+	userEntity.setLastName(newUser.getLastName());
+	userEntity.setGender(newUser.getGender());
+	userEntity.setAge(newUser.getAge());
+	userEntity.setPhoneNumber(newUser.getPhoneNumber());
+	
+	return modelMapper.map(userDao.save(userEntity), UserPostDto.class);
 }
 }
