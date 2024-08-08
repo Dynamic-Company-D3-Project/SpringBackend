@@ -54,5 +54,11 @@ public class BookingServiceImpl implements BookingService {
 		});
 		return bookingDto;
 	}
+	@Override
+	public String deleteBooking(Long id) {
+		BookingEntity bookingEntity= bookingDao.findById(id).orElseThrow(()->new ResourceNotFoundException("booking not found"));
+		bookingDao.delete(bookingEntity);
+		return "booking deleted successfully";
+	}
 
 }
