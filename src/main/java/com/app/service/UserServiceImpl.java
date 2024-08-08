@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.app.Entities.AddressEntity;
@@ -28,11 +29,14 @@ private UserDao userDao;
 private AddressDao addressDao;
 @Autowired
 private ModelMapper modelMapper;
+ private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
 @Override
 public UserDto addNewUser(UserDto userDto) {
 	if(userDto.getPassword().equals(userDto.getConfirmPassword()))
 	{
 		UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+		userEntity.setPassword(encoder.encode(userEntity.getPassword()));
 		UserEntity savedUser =  userDao.save(userEntity);
 		return modelMapper.map(savedUser, UserDto.class);
 	}
@@ -42,12 +46,14 @@ public UserDto addNewUser(UserDto userDto) {
 
 @Override
 public UserDto loginUser(UserLoginDto userLoginDto) {
-	String emailString = userLoginDto.getEmail();
-	String passwordString = userLoginDto.getPassword();
-	UserEntity user = userDao.findByEmailAndPassword(emailString, passwordString).orElseThrow(()-> new ResourceNotFoundException("User not found"));
-	UserDto userDto = modelMapper.map(user, UserDto.class);
-	return userDto;
+    UserEntity user = userDao.findByEmail(userLoginDto.getEmail())
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    if (!encoder.matches(userLoginDto.getPassword(), user.getPassword())) {
+        throw new ApiException("Invalid credentials");
+    }
+    return modelMapper.map(user, UserDto.class);
 }
+
 @Override
 public String updatePassword(String email, String newPassword) {
 	UserEntity userEntity=userDao.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("email does not match"));
