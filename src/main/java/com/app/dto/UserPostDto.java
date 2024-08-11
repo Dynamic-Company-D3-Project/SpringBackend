@@ -13,7 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserPostDto {
-	@NotBlank(message = "first name cannot be blank")
+	@NotBlank(message = "fisrt name cannot be blank")
 	private String firstName;
 	@NotBlank(message = "last name cannot be blank")
 	private String lastName;

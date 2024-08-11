@@ -4,8 +4,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.Entities.AddressEntity;
-import com.app.Jwt.JwtResponse;
-import com.app.Security.JwtHelper;
-import com.app.custom_exceptions.ApiException;
 import com.app.dto.AddressDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserLoginDto;
@@ -29,17 +23,13 @@ import com.app.dto.UserPostDto;
 import com.app.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@Slf4j
 @RequestMapping("/user")
 public class UserController {	
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private JwtHelper helper;
 	
 	@PostMapping("/register")
 	@Operation(summary = "register user")
@@ -47,31 +37,12 @@ public class UserController {
 		
 			return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(userDto));	
 	}
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    @PostMapping("/login")
-    @Operation(summary = "Login user")
-    public ResponseEntity<?> userLogin(@RequestBody @Valid UserLoginDto userLoginDto) {
-        try {
-            // Call the service layer to authenticate the user and get the JWT response
-            JwtResponse jwtResponse = userService.loginUser(userLoginDto);
-
-            // Log the successful login
-            logger.info("User {} logged in successfully", userLoginDto.getEmail());
-
-            // Return the JWT token and user information
-            return ResponseEntity.status(HttpStatus.OK).body(jwtResponse);
-        } catch (ApiException e) {
-            // Log the error and return an unauthorized response
-            logger.error("Login failed for user {}: {}", userLoginDto.getEmail(), e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        } catch (Exception e) {
-            // Log any other errors
-            logger.error("Unexpected error during login: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-        }
-    
-}
+	@PostMapping("/login")
+	@Operation(summary = "login user")
+	public ResponseEntity<?> userLogin(@RequestBody @Valid UserLoginDto userLoginDto)
+	{
+		return ResponseEntity.status(HttpStatus.OK).body(userService.loginUser(userLoginDto));
+	}
 	
 	@PutMapping("/forgetPassword")
 	@Operation(summary = "forget password")
@@ -81,14 +52,11 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.updatePassword(email, newPassword));
 	}
 	
-	@PutMapping("/updateUser")
-//	@Operation(summary = "update User")
-	public ResponseEntity<?> updateUser(@RequestBody @Valid UserPostDto newUser,@RequestHeader("Authorization") String authHeader)
+	@PutMapping("/updateUser/{id}")
+	@Operation(summary = "update User")
+	public ResponseEntity<?> updateUser(@RequestBody @Valid UserPostDto newUser,@PathVariable Long id)
 	{
-		System.out.println(authHeader);
-		// Extract the token from the Authorization header (removing "Bearer " prefix)
-        String token = authHeader.substring(7);
-		return ResponseEntity.ok().body(userService.updateUser(newUser, token));
+		return ResponseEntity.ok().body(userService.updateUser(newUser, id));
 	}
 	@PostMapping("/address/{id}")
 	@Operation(summary = "add address of user")
