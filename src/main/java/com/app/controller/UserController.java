@@ -37,6 +37,7 @@ public class UserController {
 		
 			return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(userDto));	
 	}
+	
 	@PostMapping("/login")
 	@Operation(summary = "login user")
 	public ResponseEntity<?> userLogin(@RequestBody @Valid UserLoginDto userLoginDto)
@@ -58,6 +59,7 @@ public class UserController {
 	{
 		return ResponseEntity.ok().body(userService.updateUser(newUser, id));
 	}
+	
 	@PostMapping("/address/{id}")
 	@Operation(summary = "add address of user")
 	public ResponseEntity<?> addAddress(@RequestBody AddressDto addressDto, @PathVariable Long id){
