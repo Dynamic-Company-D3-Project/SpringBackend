@@ -75,7 +75,7 @@ public class UserController {
 	
 	@PutMapping("/forgetPassword")
 	@Operation(summary = "forget password")
-	public ResponseEntity<?> forgotPassword(@RequestBody @Email String email,@RequestBody @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,12}$",
+	public ResponseEntity<?> forgotPassword(@RequestParam @Email String email,@RequestParam @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,12}$",
 		    message = "password must be min 4 and max 12 length containing atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ") String newPassword)
 	{
 		return ResponseEntity.ok().body(userService.updatePassword(email, newPassword));
@@ -90,6 +90,7 @@ public class UserController {
         String token = authHeader.substring(7);
 		return ResponseEntity.ok().body(userService.updateUser(newUser, token));
 	}
+	
 	@PostMapping("/address/{id}")
 	@Operation(summary = "add address of user")
 	public ResponseEntity<?> addAddress(@RequestBody AddressDto addressDto, @PathVariable Long id){

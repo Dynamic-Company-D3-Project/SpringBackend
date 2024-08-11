@@ -74,7 +74,7 @@ public JwtResponse loginUser(UserLoginDto userLoginDto) {
 @Override
 public String updatePassword(String email, String newPassword) {
 	UserEntity userEntity=userDao.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("email does not match"));
-	userEntity.setPassword(newPassword);
+	userEntity.setPassword(encoder.encode(newPassword));
 	if(userDao.save(userEntity)!=null)
 	return "password changed successfully";
 	else {
