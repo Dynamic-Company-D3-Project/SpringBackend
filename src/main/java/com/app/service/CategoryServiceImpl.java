@@ -15,6 +15,7 @@ import com.app.Entities.CategoryEntity;
 import com.app.custom_exceptions.ApiException;
 import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dao.CategoryDao;
+import com.app.dao.SubCategoryDao;
 import com.app.dto.CategoryDto;
 import com.app.dto.CategorySubDto;
 import com.app.dto.SubCategoryDto;
@@ -24,6 +25,8 @@ import com.app.dto.SubCategoryDto;
 public class CategoryServiceImpl implements CategoryService {
 	@Autowired
     private CategoryDao categoryDao;
+	@Autowired
+	private SubCategoryDao subCategoryDao;
 	@Autowired
 	private ModelMapper mapper;
 	@Override
@@ -53,6 +56,10 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategorySubDto getSubCategoryById(Long id) {
 		return  mapper.map(categoryDao.listofCategoryWithSub(id),CategorySubDto.class);	
+	}
+	@Override
+	public SubCategoryDto getSubCategoryDetails(Long id) {
+		return  mapper.map(subCategoryDao.findById(id),SubCategoryDto.class);
 	}
 	@Override
 	public CategorySubDto getSubCategoryByName(String categoryName) {

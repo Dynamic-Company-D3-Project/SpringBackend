@@ -32,5 +32,5 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 		SubCategoryDto subCategoryDto=mapper.map(subCategoryEntity, SubCategoryDto.class);
 		return subCategoryDto;
 	}
- 
+   
 }

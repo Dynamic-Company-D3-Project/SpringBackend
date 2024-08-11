@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SubCategoryDto {
-    private Integer id;
+    private Long id;
     private String categoryName;
     private String description;
     private String image;
