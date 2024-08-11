@@ -23,7 +23,8 @@ import lombok.ToString;
 public class UserDto {
 	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
-	@NotBlank(message = "first name cannot be blank")
+	
+	@NotBlank(message = "fisrt name cannot be blank")
 	private String firstName;
 	@NotBlank(message = "last name cannot be blank")
 	private String lastName;
