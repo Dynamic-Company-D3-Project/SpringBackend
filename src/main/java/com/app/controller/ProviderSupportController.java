@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.service.ReviewsService;
+import com.app.service.ProviderSupportService;
 
 @RestController
-@RequestMapping("/reviews")
-public class ReviewController {
+@RequestMapping("/provider-support")
+public class ProviderSupportController {
+
 	@Autowired
-	private ReviewsService reviewService;
+	ProviderSupportService psService;
 	
-	@GetMapping("/{subCatId}")
-	public ResponseEntity<?> getReviewsBySubCat(@PathVariable Long subCatId){
-		System.out.println("get review "+subCatId);
-		return ResponseEntity.ok().body(reviewService.getReviews(subCatId));
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getAllTickets(@PathVariable Long id){
+		return ResponseEntity.ok().body(psService.getAllTickets(id));
 	}
 }

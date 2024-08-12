@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,9 +34,16 @@ public class ProviderSupportEntity {
     @ManyToOne
     @JoinColumn(name = "bookingId")
     private BookingEntity booking; 
+    
+    @ManyToOne
+    @JoinColumn(name="providerId")
+    private ProviderEntity provider;
+    
     @Column(length = 100, nullable = false)
     private String supportType;
     @Column(length = 255,nullable = false)
     private String description;
+    
+    @Enumerated(EnumType.STRING)
     private Status status;
 }
