@@ -27,4 +27,5 @@ public interface UserService {
 	AddressDto getSingleAddress(String token,AddressTypeEnum aEnum);
 	String updateAddress(String token,AddressPostDto aDto);
 	String getHomeAddressString(String token);
+	UserDto getUserDetails(String token);
 }
