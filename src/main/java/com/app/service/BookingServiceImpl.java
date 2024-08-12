@@ -38,7 +38,7 @@ public class BookingServiceImpl implements BookingService {
 		System.out.println(user);
 		
 		List<BookingEntity> bookings = bookingDao.findByUserId(user);
-		bookings.forEach(System.out::println);
+		//bookings.forEach(System.out::println);
 		
 		List<BookingDto> bookingDto = new ArrayList<BookingDto>();
 		bookings

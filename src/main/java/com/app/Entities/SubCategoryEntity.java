@@ -29,14 +29,14 @@ import lombok.ToString;
 @Setter
 @Getter
 @Table(name="subcategory")
-@ToString
+@ToString(exclude = {"category"})
 public class SubCategoryEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id", nullable = false)
-	@ToStringExclude
+	
 	private CategoryEntity category;
 	@Column(length = 25)
 	private String categoryName;
