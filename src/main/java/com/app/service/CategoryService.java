@@ -13,5 +13,4 @@ List<CategoryDto> getAllCategories();
 List<CategorySubDto> getAllCategoryWithSubCategory();
 CategorySubDto getSubCategoryById(Long id);
 CategorySubDto getSubCategoryByName(String categoryName);
-SubCategoryDto getSubCategoryDetails(Long id);
 }

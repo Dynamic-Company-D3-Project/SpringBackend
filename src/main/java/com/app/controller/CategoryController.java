@@ -45,12 +45,6 @@ public class CategoryController {
 	}
 
 
-	@CrossOrigin(origins = "http://localhost:3000")
-	@GetMapping("/subCategoryDetails/{id}")
-	public ResponseEntity<?> getSubcategoryDetails(@PathVariable Long id){
-		return ResponseEntity.status(HttpStatus.OK).body(categoryService.getSubCategoryDetails(id));
-	}
-
 	@GetMapping("/categoryWithSubCategoryListByName")
 	@Operation(summary = "get Category with list of Subcategory find by Name")
 	public ResponseEntity<?> getCategoryWithSubByName(@RequestParam String categoryName)

@@ -57,10 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public CategorySubDto getSubCategoryById(Long id) {
 		return  mapper.map(categoryDao.listofCategoryWithSub(id),CategorySubDto.class);	
 	}
-	@Override
-	public SubCategoryDto getSubCategoryDetails(Long id) {
-		return  mapper.map(subCategoryDao.findById(id),SubCategoryDto.class);
-	}
+	
 	@Override
 	public CategorySubDto getSubCategoryByName(String categoryName) {
 		CategoryEntity categoryEntity = categoryDao.listofCategoryWithSubFindByName(categoryName).orElseThrow(()-> new ResourceNotFoundException("category name not found"));

@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.app.Entities.UserEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import Helpers.AddressTypeEnum;
 import lombok.Getter;
@@ -18,6 +20,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class AddressDto {
+	 private Long addressId;
 	 private String street;
 	 private AddressTypeEnum addressType;
 	 private Long pincode;
