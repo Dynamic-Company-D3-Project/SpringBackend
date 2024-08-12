@@ -30,7 +30,7 @@ public class BookingEntity {
 	private UserEntity userId;
 	
 	@ManyToOne
-	@JoinColumn(name="provider_id", nullable=false)
+	@JoinColumn(name="provider_id")
 	private ProviderEntity provider_id;
 	
 	@ManyToOne
@@ -45,5 +45,7 @@ public class BookingEntity {
 	@Column(name = "booking_time", nullable = false)
 	private LocalTime time;
 	
+	@Column(name="address_id")
+	private Long addressId;
 	
 }
