@@ -82,7 +82,9 @@ public AddressDto addAddress(AddressDto addressDto, Long id) {
 	UserEntity entity = userDao.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found"));
 	if(entity != null) {
 		AddressEntity addressEntity = modelMapper.map(addressDto, AddressEntity.class);
+		
 		addressEntity.setUser(entity);
+		System.out.println(addressEntity);
 		addressDao.save(addressEntity);
 		return addressDto;
 	}

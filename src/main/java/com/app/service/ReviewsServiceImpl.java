@@ -35,7 +35,7 @@ public class ReviewsServiceImpl implements ReviewsService{
 		SubCategoryEntity sub = subDao.findById(subcatId)
 				.orElseThrow(()->new ResourceNotFoundException("subcategory not found"));
 		List<ReviewsEntity> reviewList = reviewDao.findBySubCategory(sub);
-		reviewList.forEach(System.out::println);
+		//reviewList.forEach(System.out::println);
 		List<ReviewsDto> reviewDtoList= new ArrayList<ReviewsDto>();
 		
 	

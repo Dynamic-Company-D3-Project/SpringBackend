@@ -55,4 +55,6 @@ public class OrdersEntity {
 	@Column(name = "order_time", nullable = false)
 	private LocalTime time;
 	
+	@Column(name="address_id")
+	private Long addressId;
 }
