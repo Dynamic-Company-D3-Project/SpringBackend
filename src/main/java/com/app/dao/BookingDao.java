@@ -10,5 +10,4 @@ import com.app.Entities.UserEntity;
 public interface BookingDao extends JpaRepository<BookingEntity, Long> {
 
 	List<BookingEntity> findByUserId(UserEntity user);
-
 }

@@ -25,11 +25,13 @@ import com.app.Jwt.JwtResponse;
 import com.app.Security.JwtHelper;
 import com.app.custom_exceptions.ApiException;
 import com.app.dto.AddressDto;
+import com.app.dto.AddressPostDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserLoginDto;
 import com.app.dto.UserPostDto;
 import com.app.service.UserService;
 
+import Helpers.AddressTypeEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 
@@ -79,8 +81,7 @@ public class UserController {
 	
 	@PutMapping("/forgetPassword")
 	@Operation(summary = "forget password")
-	@CrossOrigin(origins = "http://localhost:3000")
-	public ResponseEntity<?> forgotPassword(@RequestBody @Email String email,@RequestBody @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,12}$",
+	public ResponseEntity<?> forgotPassword(@RequestParam @Email String email,@RequestParam @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,12}$",
 		    message = "password must be min 4 and max 12 length containing atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ") String newPassword)
 	{
 		return ResponseEntity.ok().body(userService.updatePassword(email, newPassword));
@@ -105,10 +106,43 @@ public class UserController {
         String token = authHeader.substring(7);
 		return ResponseEntity.ok().body(userService.updateUser(newUser, token));
 	}
-	@PostMapping("/address/{id}")
+	
+	@PostMapping("/address")
 	@Operation(summary = "add address of user")
-	public ResponseEntity<?> addAddress(@RequestBody AddressDto addressDto, @PathVariable Long id){
-		return ResponseEntity.ok().body(userService.addAddress(addressDto, id));
+	public ResponseEntity<?> addAddress(@RequestBody AddressDto addressDto, @RequestHeader("Authorization") String authHeader){
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.addAddress(addressDto, token));
 	}
 	
+	@PostMapping("/getAddress")
+	@Operation(summary = "get user address Details")
+	public ResponseEntity<?> getUserAddress(@RequestHeader("Authorization") String authHeader)
+	{
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.getAddress(token));
+	}
+	
+	@GetMapping("/getAddressOnType")
+	@Operation(summary = "get user address based on address Type")
+	public ResponseEntity<?> getAddressOnType(@RequestHeader("Authorization") String authHeader,@RequestParam AddressTypeEnum aEnum)
+	{
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.getSingleAddress(token, aEnum));
+	}
+	
+	@PutMapping("/updateAddress")
+	@Operation(summary = "update user address")
+	public ResponseEntity<?> updateAddress(@RequestHeader("Authorization") String authHeader,@RequestBody @Valid AddressPostDto aDto)
+	{
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.updateAddress(token, aDto));
+	}
+	
+	@GetMapping("/getHomeAddressString")
+	@Operation(summary = "get home address String of user")
+	public ResponseEntity<?> getHomeAddressString(@RequestHeader("Authorization") String authHeader)
+	{
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.getHomeAddressString(token));	
+	}
 }
