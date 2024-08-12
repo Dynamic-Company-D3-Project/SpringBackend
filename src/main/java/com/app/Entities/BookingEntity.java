@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class BookingEntity {
 	private UserEntity userId;
 	
 	@ManyToOne
-	@JoinColumn(name="provider_id", nullable=false)
+	@JoinColumn(name="provider_id")
 	private ProviderEntity provider_id;
 	
 	@ManyToOne

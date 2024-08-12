@@ -1,7 +1,10 @@
 package com.app.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -20,9 +23,12 @@ import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dao.AddressDao;
 import com.app.dao.UserDao;
 import com.app.dto.AddressDto;
+import com.app.dto.AddressPostDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserLoginDto;
 import com.app.dto.UserPostDto;
+
+import Helpers.AddressTypeEnum;
 
 @Service
 @Transactional
@@ -97,7 +103,8 @@ public UserPostDto updateUser(UserPostDto newUser,String token) {
 
 
 @Override
-public AddressDto addAddress(AddressDto addressDto, Long id) {
+public AddressDto addAddress(AddressDto addressDto,String token) {
+	Long id = jwtHelper.getUserIdFromToken(token);
 	UserEntity entity = userDao.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found"));
 	if(entity != null) {
 		AddressEntity addressEntity = modelMapper.map(addressDto, AddressEntity.class);
@@ -107,4 +114,73 @@ public AddressDto addAddress(AddressDto addressDto, Long id) {
 	}
 	return null;
   }
+
+
+@Override
+public List<AddressDto> getAddress(String token) {
+	Long id = jwtHelper.getUserIdFromToken(token);
+	UserEntity user = userDao.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+	List<AddressEntity> addressList = addressDao.findAllByUser(user);
+	return addressList.stream().map(entity->{
+		AddressDto aDto = modelMapper.map(entity, AddressDto.class);
+		return aDto;
+	})
+    .collect(Collectors.toList());	
+}
+
+
+@Override
+public AddressDto getSingleAddress(String token, AddressTypeEnum aEnum) {
+	Long id = jwtHelper.getUserIdFromToken(token);
+	UserEntity user = userDao.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+	List<AddressEntity> addressList = addressDao.findAllByUser(user);
+	AddressDto aDto = new AddressDto();
+	for (AddressEntity addressEntity : addressList) {
+		if(addressEntity.getAddressType()==aEnum)
+		{
+			 aDto = modelMapper.map(addressEntity, AddressDto.class);
+		}
+	}
+	return aDto;
+}
+
+
+@Override
+public String updateAddress(String token, AddressPostDto aDto) {
+	Long id = jwtHelper.getUserIdFromToken(token);
+	UserEntity user = userDao.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+	List<AddressEntity> addressList = addressDao.findAllByUser(user);
+	for (AddressEntity addressEntity : addressList) {
+		if(addressEntity.getAddressType()==aDto.getAddressType())
+		{
+			addressEntity.setStreet(aDto.getStreet());
+			addressEntity.setHouseNo(aDto.getHouseNo());
+			addressEntity.setCountry(aDto.getCountry());
+			addressEntity.setState(aDto.getState());
+			addressEntity.setCity(aDto.getCity());
+			addressEntity.setPincode(aDto.getPincode());
+			addressDao.save(addressEntity);
+		}
+	}
+	return "Address Updated Successfully";
+}
+
+
+@Override
+public String getHomeAddressString(String token) {
+	Long id = jwtHelper.getUserIdFromToken(token);
+	UserEntity user = userDao.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+	List<AddressEntity> addressList = addressDao.findAllByUser(user);
+	AddressTypeEnum aEnum = AddressTypeEnum.HOME;
+	String address = null;
+	for (AddressEntity addressEntity : addressList) {
+		if(addressEntity.getAddressType()==aEnum)
+		{
+		address= addressEntity.getHouseNo()+" "+addressEntity.getStreet()+" "+addressEntity.getCity()+" "+addressEntity.getPincode()+", "+addressEntity.getState()+
+				", "+addressEntity.getCountry();
+		}
+	}
+	return address;
+}
+
 }

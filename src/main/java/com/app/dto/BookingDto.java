@@ -28,7 +28,7 @@ public class BookingDto {
 	@JsonProperty(access = Access.READ_ONLY)
 	private Long bookingId;
 	private String subcategoryName;
-	private String providerName;
+	private ProviderEntity provider_id;
 	private BookingStatus status;
 	private Double rate;
 	private LocalDate date;

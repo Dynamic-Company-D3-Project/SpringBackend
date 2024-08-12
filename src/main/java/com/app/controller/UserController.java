@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,11 +24,13 @@ import com.app.Jwt.JwtResponse;
 import com.app.Security.JwtHelper;
 import com.app.custom_exceptions.ApiException;
 import com.app.dto.AddressDto;
+import com.app.dto.AddressPostDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserLoginDto;
 import com.app.dto.UserPostDto;
 import com.app.service.UserService;
 
+import Helpers.AddressTypeEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 
@@ -91,10 +94,42 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.updateUser(newUser, token));
 	}
 	
-	@PostMapping("/address/{id}")
+	@PostMapping("/address")
 	@Operation(summary = "add address of user")
-	public ResponseEntity<?> addAddress(@RequestBody AddressDto addressDto, @PathVariable Long id){
-		return ResponseEntity.ok().body(userService.addAddress(addressDto, id));
+	public ResponseEntity<?> addAddress(@RequestBody AddressDto addressDto, @RequestHeader("Authorization") String authHeader){
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.addAddress(addressDto, token));
 	}
 	
+	@PostMapping("/getAddress")
+	@Operation(summary = "get user address Details")
+	public ResponseEntity<?> getUserAddress(@RequestHeader("Authorization") String authHeader)
+	{
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.getAddress(token));
+	}
+	
+	@GetMapping("/getAddressOnType")
+	@Operation(summary = "get user address based on address Type")
+	public ResponseEntity<?> getAddressOnType(@RequestHeader("Authorization") String authHeader,@RequestParam AddressTypeEnum aEnum)
+	{
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.getSingleAddress(token, aEnum));
+	}
+	
+	@PutMapping("/updateAddress")
+	@Operation(summary = "update user address")
+	public ResponseEntity<?> updateAddress(@RequestHeader("Authorization") String authHeader,@RequestBody @Valid AddressPostDto aDto)
+	{
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.updateAddress(token, aDto));
+	}
+	
+	@GetMapping("/getHomeAddressString")
+	@Operation(summary = "get home address String of user")
+	public ResponseEntity<?> getHomeAddressString(@RequestHeader("Authorization") String authHeader)
+	{
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.getHomeAddressString(token));	
+	}
 }
