@@ -6,6 +6,6 @@ import com.app.dto.OrdersDto;
 
 public interface OrdersService {
 
-	List<OrdersDto> getAllOrders(Long userId);
+	List<OrdersDto> getAllOrders(String token);
 
 }

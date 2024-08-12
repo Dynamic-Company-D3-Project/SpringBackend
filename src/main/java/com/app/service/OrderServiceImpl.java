@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.Entities.OrdersEntity;
 import com.app.Entities.UserEntity;
+import com.app.Security.JwtHelper;
 import com.app.dao.OrdersDao;
 import com.app.dao.UserDao;
 import com.app.dto.OrdersDto;
@@ -29,8 +30,12 @@ public class OrderServiceImpl implements OrdersService {
 	@Autowired
 	private ModelMapper mapper;
 	
+	@Autowired
+	private JwtHelper jwtHelper;
+	
 	@Override
-	public List<OrdersDto> getAllOrders(Long userId) {
+	public List<OrdersDto> getAllOrders(String token) {
+		Long userId = jwtHelper.getUserIdFromToken(token);
 		System.out.println("getAllOrders "+ userId);
 		UserEntity user = userDao.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid User Id !!!!"));

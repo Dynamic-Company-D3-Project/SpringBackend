@@ -9,7 +9,7 @@ import com.app.dto.BookingPostDto;
 
 public interface BookingService {
 
-	List<BookingDto> getAllBookings(Long userId);
+	List<BookingDto> getAllBookings(String token);
     String deleteBooking(Long id);
-    String addBooking(Long id,Long uid,LocalDate date,LocalTime t);
+    String addBooking(Long id,String token,LocalDate date,LocalTime t);
 }
