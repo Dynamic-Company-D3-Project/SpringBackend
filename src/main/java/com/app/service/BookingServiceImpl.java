@@ -14,6 +14,7 @@ import com.app.Entities.BookingEntity;
 import com.app.Entities.OrdersEntity;
 import com.app.Entities.SubCategoryEntity;
 import com.app.Entities.UserEntity;
+import com.app.Security.JwtHelper;
 import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dao.BookingDao;
 import com.app.dao.OrdersDao;
@@ -39,14 +40,17 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	private SubCategoryDao subDao;
 	
+	@Autowired
+	private JwtHelper jwtHelper;
+	
 //	@Autowired
 //	private ProviderSupportDao pDao;
 	
 	@Autowired
 	private ModelMapper mapper;
 	@Override
-	public List<BookingDto> getAllBookings(Long userId) {
-		System.out.println("getAllBookings "+ userId);
+	public List<BookingDto> getAllBookings(String token) {
+		Long userId = jwtHelper.getUserIdFromToken(token);
 		UserEntity user = userDao.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid User Id !!!!"));
 		
@@ -78,7 +82,8 @@ public class BookingServiceImpl implements BookingService {
 		return "booking deleted successfully";
 	}
 	@Override
-	public String addBooking(Long id, Long uid, LocalDate date, LocalTime t) {
+	public String addBooking(Long id, String token, LocalDate date, LocalTime t) {
+		Long uid = jwtHelper.getUserIdFromToken(token);
 		if(subDao.existsById(id))
 		{
 			SubCategoryEntity subCategoryEntity = subDao.findById(id).orElseThrow(()->new ResourceNotFoundException("sub category not found"));

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,11 +31,12 @@ public class BookingController {
 	@Autowired
 	private BookingService bookingService;
 	
-	@GetMapping("/{userId}")
+
+	@GetMapping("/getBooking")
 	@Operation(summary = "get booking details")
-	public ResponseEntity<?> getUserBookings(@PathVariable Long userId ){
-		System.out.println("get orders for user "+userId);
-		return ResponseEntity.status(HttpStatus.FOUND).body(bookingService.getAllBookings(userId));
+	public ResponseEntity<?> getUserBookings(@RequestHeader("Authorization") String authHeader){
+		String token = authHeader.substring(7);
+		return ResponseEntity.status(HttpStatus.FOUND).body(bookingService.getAllBookings(token));
 	}
 	
 	@DeleteMapping("/deleteBooking/{id}")
@@ -46,12 +48,12 @@ public class BookingController {
 	
 	@GetMapping("/book")
 	@Operation(summary = "book service")
-	public ResponseEntity<?> bookService(@RequestParam Long id,@RequestParam Long uid,@RequestParam String date,String time)
+	public ResponseEntity<?> bookService(@RequestParam Long id,@RequestHeader("Authorization") String authHeader, @RequestParam String date,String time)
 	{
-		System.out.println(date+" "+time);
+
 		LocalDate date2 = LocalDate.parse(date);
 		LocalTime time2 = LocalTime.parse(time);
-		System.out.println(date2+" "+time2);
-		return ResponseEntity.ok().body(bookingService.addBooking(id, uid, date2, time2));
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(bookingService.addBooking(id, token, date2, time2));
 	}
 }
