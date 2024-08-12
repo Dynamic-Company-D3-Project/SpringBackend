@@ -82,9 +82,15 @@ public String updatePassword(String email, String newPassword) {
 	}
 }
 @Override
+public UserDto getUserDetails(String token) {
+	Long id = jwtHelper.getUserIdFromToken(token);
+	UserEntity userEntity = userDao.findById(id).orElseThrow(()-> new ResourceNotFoundException("No user exists"));
+	return modelMapper.map(userEntity, UserDto.class);
+}
+@Override
 public UserPostDto updateUser(UserPostDto newUser,String token) {
 	Long id = jwtHelper.getUserIdFromToken(token);
-	System.out.println(id);
+	//System.out.println(id);
 	UserEntity userEntity=userDao.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
 	userEntity.setFirstName(newUser.getFirstName());
 	userEntity.setLastName(newUser.getLastName());

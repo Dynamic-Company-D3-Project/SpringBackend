@@ -18,4 +18,5 @@ public interface UserService {
 	String updatePassword(String email,String newPassword);
 	UserPostDto updateUser(UserPostDto newUser,String token);
 	AddressDto addAddress(AddressDto addressDto, Long id);
+	UserDto getUserDetails(String token);
 }

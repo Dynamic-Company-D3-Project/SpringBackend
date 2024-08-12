@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,6 +43,7 @@ public class UserController {
 	@Autowired
 	private JwtHelper helper;
 	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/register")
 	@Operation(summary = "register user")
 	public ResponseEntity<?> userRegistration(@RequestBody @Valid UserDto userDto){
@@ -50,6 +53,7 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/login")
+	@CrossOrigin(origins = "http://localhost:3000")
     @Operation(summary = "Login user")
     public ResponseEntity<?> userLogin(@RequestBody @Valid UserLoginDto userLoginDto) {
         try {
@@ -69,23 +73,34 @@ public class UserController {
             // Log any other errors
             logger.error("Unexpected error during login: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-        }
-    
+        }   
 }
+    
 	
 	@PutMapping("/forgetPassword")
 	@Operation(summary = "forget password")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<?> forgotPassword(@RequestBody @Email String email,@RequestBody @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,12}$",
 		    message = "password must be min 4 and max 12 length containing atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ") String newPassword)
 	{
 		return ResponseEntity.ok().body(userService.updatePassword(email, newPassword));
 	}
 	
+	@GetMapping("/getUser")
+	@Operation(summary = "get User")
+	@CrossOrigin(origins = "http://localhost:3000")
+	public ResponseEntity<?> getUserDetails(@RequestHeader("Authorization") String authHeader)
+	{
+		String token = authHeader.substring(7);
+		return ResponseEntity.ok().body(userService.getUserDetails(token));
+	}
+	
 	@PutMapping("/updateUser")
-//	@Operation(summary = "update User")
+	@Operation(summary = "update User")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<?> updateUser(@RequestBody @Valid UserPostDto newUser,@RequestHeader("Authorization") String authHeader)
 	{
-		System.out.println(authHeader);
+		//System.out.println(authHeader);
 		// Extract the token from the Authorization header (removing "Bearer " prefix)
         String token = authHeader.substring(7);
 		return ResponseEntity.ok().body(userService.updateUser(newUser, token));
