@@ -33,14 +33,15 @@ public class BookingController {
 	@Autowired
 	private BookingService bookingService;
 	
-
+	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/getBooking")
 	@Operation(summary = "get booking details")
 	public ResponseEntity<?> getUserBookings(@RequestHeader("Authorization") String authHeader){
 		String token = authHeader.substring(7);
-		return ResponseEntity.status(HttpStatus.FOUND).body(bookingService.getAllBookings(token));
+		return ResponseEntity.ok().body(bookingService.getAllBookings(token));
 	}
 	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@DeleteMapping("/deleteBooking/{id}")
 	@Operation(summary = "delete bookings")
 	public ResponseEntity<?> deleteBooking(@PathVariable Long id)

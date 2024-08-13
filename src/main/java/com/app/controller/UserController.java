@@ -107,6 +107,7 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.updateUser(newUser, token));
 	}
 	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/address")
 	@Operation(summary = "add address of user")
 	public ResponseEntity<?> addAddress(@RequestBody AddressDto addressDto, @RequestHeader("Authorization") String authHeader){
@@ -114,8 +115,13 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.addAddress(addressDto, token));
 	}
 	
+<<<<<<< HEAD
 	@GetMapping("/getAddress")
 	@CrossOrigin(origins = "http://localhost:3000")
+=======
+	@CrossOrigin(origins = "http://localhost:3000")
+	@PostMapping("/getAddress")
+>>>>>>> 45eb4e20b854df60e4ce4ed6028f1be10debbca4
 	@Operation(summary = "get user address Details")
 	public ResponseEntity<?> getUserAddress(@RequestHeader("Authorization") String authHeader)
 	{
@@ -123,6 +129,7 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.getAddress(token));
 	}
 	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/getAddressOnType")
 	@CrossOrigin(origins = "http://localhost:3000")
 	@Operation(summary = "get user address based on address Type")
@@ -132,6 +139,7 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.getSingleAddress(token, aEnum));
 	}
 	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("/updateAddress")
 	@CrossOrigin(origins = "http://localhost:3000")
 	@Operation(summary = "update user address")
