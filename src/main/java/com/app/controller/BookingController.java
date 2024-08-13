@@ -8,9 +8,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,13 +48,13 @@ public class BookingController {
 		return ResponseEntity.ok().body(bookingService.deleteBooking(id));
 	}
 	
-	@GetMapping("/book")
+	@PostMapping("/book/{id}")
+	@CrossOrigin(origins = "http://localhost:3000")
 	@Operation(summary = "book service")
-	public ResponseEntity<?> bookService(@RequestParam Long id,@RequestHeader("Authorization") String authHeader, @RequestParam String date,String time)
+	public ResponseEntity<?> bookService(@RequestBody BookingPostDto bookingPostDto,@RequestHeader("Authorization") String authHeader,@PathVariable long id)
 	{
-
-		LocalDate date2 = LocalDate.parse(date);
-		LocalTime time2 = LocalTime.parse(time);
+		LocalDate date2 = LocalDate.parse(bookingPostDto.getDate());
+		LocalTime time2 = LocalTime.parse(bookingPostDto.getTime());
 		String token = authHeader.substring(7);
 		return ResponseEntity.ok().body(bookingService.addBooking(id, token, date2, time2));
 	}
