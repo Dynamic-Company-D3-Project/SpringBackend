@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,14 +32,15 @@ public class BookingController {
 	@Autowired
 	private BookingService bookingService;
 	
-
+	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/getBooking")
 	@Operation(summary = "get booking details")
 	public ResponseEntity<?> getUserBookings(@RequestHeader("Authorization") String authHeader){
 		String token = authHeader.substring(7);
-		return ResponseEntity.status(HttpStatus.FOUND).body(bookingService.getAllBookings(token));
+		return ResponseEntity.ok().body(bookingService.getAllBookings(token));
 	}
 	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@DeleteMapping("/deleteBooking/{id}")
 	@Operation(summary = "delete bookings")
 	public ResponseEntity<?> deleteBooking(@PathVariable Long id)
@@ -46,6 +48,7 @@ public class BookingController {
 		return ResponseEntity.ok().body(bookingService.deleteBooking(id));
 	}
 	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/book")
 	@Operation(summary = "book service")
 	public ResponseEntity<?> bookService(@RequestParam Long id,@RequestHeader("Authorization") String authHeader, @RequestParam String date,String time)
