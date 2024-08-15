@@ -27,6 +27,7 @@ import com.app.dto.AddressPostDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserLoginDto;
 import com.app.dto.UserPostDto;
+import com.app.mail.EmailService;
 
 import Helpers.AddressTypeEnum;
 
@@ -50,6 +51,7 @@ public UserDto addNewUser(UserDto userDto) {
 		UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 		userEntity.setPassword(encoder.encode(userEntity.getPassword()));
 		UserEntity savedUser =  userDao.save(userEntity);
+		//if(savedUser != null) emailService.sendWelcomeEmail(savedUser.getEmail(), savedUser.getFirstName());
 		return modelMapper.map(savedUser, UserDto.class);
 	}
 	throw new ApiException("Password does not matched");

@@ -3,6 +3,7 @@ package com.app.Entities;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,17 +37,9 @@ public class ReviewsEntity {
 	@ManyToOne
 	@JoinColumn(name = "subCategoryId")
 	private SubCategoryEntity subCategory;
-	
 	private int rating;
 	@Lob
 	private String reivew;
 	@CreationTimestamp
-	private LocalDate reviewDate;
-	@OneToOne
-	@JoinColumn(name = "orderId")
-	private OrdersEntity order;
-
-	
-	
-	
+	private LocalDate reviewDate;	
 }
