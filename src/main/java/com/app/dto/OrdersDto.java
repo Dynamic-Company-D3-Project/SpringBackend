@@ -30,7 +30,7 @@ public class OrdersDto {
 	private String provider_id;
 	private OrderStatus status;
 	private String description;
-	private BigDecimal rate;
+	private double rate;
 	private LocalDate date;
 	private LocalTime time;
 

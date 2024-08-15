@@ -38,7 +38,7 @@ public class SubCategoryEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
     
-    @Column(length = 25)
+    @Column(length = 100)
     private String categoryName;
     
     @Column(length = 255)

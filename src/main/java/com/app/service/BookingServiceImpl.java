@@ -26,6 +26,7 @@ import com.app.dto.OrdersDto;
 import com.app.dto.SubCategoryDto;
 
 import Helpers.BookingStatus;
+import Helpers.OrderStatus;
 
 @Service
 @Transactional
@@ -42,6 +43,9 @@ public class BookingServiceImpl implements BookingService {
 	
 	@Autowired
 	private JwtHelper jwtHelper;
+	
+	@Autowired
+	private OrdersDao oDao;
 	
 //	@Autowired
 //	private ProviderSupportDao pDao;
@@ -78,6 +82,19 @@ public class BookingServiceImpl implements BookingService {
 //        {
 //        pList.forEach((support)-> pDao.delete(support));
 //        }
+		if(bookingEntity.getStatus()==BookingStatus.ASSIGNED)
+		{
+		OrdersEntity ordersEntity = new OrdersEntity();
+		ordersEntity.setDate(bookingEntity.getDate());
+		ordersEntity.setTime(bookingEntity.getTime());
+		ordersEntity.setDescription(bookingEntity.getSubcategory_id().getDescription());
+		ordersEntity.setProvider_id(bookingEntity.getProvider_id());
+		ordersEntity.setRate(bookingEntity.getSubcategory_id().getPrice());
+		ordersEntity.setSubcategory_id(bookingEntity.getSubcategory_id());
+		ordersEntity.setUserId(bookingEntity.getUserId());
+		ordersEntity.setStatus(OrderStatus.CANCELLED);
+	    oDao.save(ordersEntity);
+		}
 		bookingDao.delete(bookingEntity);
 		return "booking deleted successfully";
 	}

@@ -48,8 +48,8 @@ public class OrdersEntity {
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	private String description;
-	@Column(name="order_rate", precision = 10, scale =2 )
-	private BigDecimal rate;
+	@Column(name="order_rate" )
+	private double rate;
 	@Column(name = "order_date", nullable = false)
 	private LocalDate date;
 	@Column(name = "order_time", nullable = false)
