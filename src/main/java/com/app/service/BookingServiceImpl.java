@@ -10,18 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.Entities.AddressEntity;
 import com.app.Entities.BookingEntity;
 import com.app.Entities.OrdersEntity;
 import com.app.Entities.SubCategoryEntity;
 import com.app.Entities.UserEntity;
 import com.app.Security.JwtHelper;
 import com.app.custom_exceptions.ResourceNotFoundException;
+import com.app.dao.AddressDao;
 import com.app.dao.BookingDao;
 import com.app.dao.OrdersDao;
 import com.app.dao.SubCategoryDao;
 import com.app.dao.UserDao;
 import com.app.dto.BookingDto;
 import com.app.dto.BookingPostDto;
+import com.app.dto.CartItemDto;
 import com.app.dto.OrdersDto;
 import com.app.dto.SubCategoryDto;
 
@@ -45,6 +48,9 @@ public class BookingServiceImpl implements BookingService {
 	
 //	@Autowired
 //	private ProviderSupportDao pDao;
+	
+	@Autowired
+	private AddressDao addressDao;
 	
 	@Autowired
 	private ModelMapper mapper;
@@ -82,18 +88,48 @@ public class BookingServiceImpl implements BookingService {
 		return "booking deleted successfully";
 	}
 	@Override
-	public String addBooking(Long id, String token, LocalDate date, LocalTime t) {
+	public String addBooking(Long id, String token, BookingPostDto bookingPostDto) {
 		Long uid = jwtHelper.getUserIdFromToken(token);
+		System.out.println(bookingPostDto);
+		LocalDate date = LocalDate.parse(bookingPostDto.getDate());
+		LocalTime time = LocalTime.parse(bookingPostDto.getTime());
 		if(subDao.existsById(id))
 		{
 			SubCategoryEntity subCategoryEntity = subDao.findById(id).orElseThrow(()->new ResourceNotFoundException("sub category not found"));
 			UserEntity userEntity = userDao.findById(uid).orElseThrow(()->new ResourceNotFoundException("user not found"));
+			System.out.println(userEntity+" "+bookingPostDto.getAddressType());
+			AddressEntity addressEntity = addressDao.findByUserAndAddressType(userEntity, bookingPostDto.getAddressType()); 
+			System.out.println(addressEntity);
 			BookingEntity bookingEntity= new BookingEntity();
 			bookingEntity.setDate(date);
-			bookingEntity.setTime(t);
+			bookingEntity.setTime(time);
 			bookingEntity.setSubcategory_id(subCategoryEntity);
 			bookingEntity.setUserId(userEntity);
 			bookingEntity.setStatus(BookingStatus.PENDING);
+			bookingEntity.setAddressId(addressEntity);
+			bookingDao.save(bookingEntity);
+			return "booking completed";
+		}
+		else
+		return "booking failed";
+	}
+	@Override
+	public String addCartBooking(Long id, String token, CartItemDto cartItemDto) {
+		Long uid = jwtHelper.getUserIdFromToken(token);
+		LocalDate date = LocalDate.parse(cartItemDto.getDate());
+		LocalTime time = LocalTime.parse(cartItemDto.getTime());
+		if(subDao.existsById(id))
+		{
+			SubCategoryEntity subCategoryEntity = subDao.findById(id).orElseThrow(()->new ResourceNotFoundException("sub category not found"));
+			UserEntity userEntity = userDao.findById(uid).orElseThrow(()->new ResourceNotFoundException("user not found"));
+			AddressEntity addressEntity = addressDao.findByUserAndAddressType(userEntity, cartItemDto.getAddressType()); 
+			BookingEntity bookingEntity= new BookingEntity();
+			bookingEntity.setDate(date);
+			bookingEntity.setTime(time);
+			bookingEntity.setSubcategory_id(subCategoryEntity);
+			bookingEntity.setUserId(userEntity);
+			bookingEntity.setStatus(BookingStatus.PENDING);
+			bookingEntity.setAddressId(addressEntity);
 			bookingDao.save(bookingEntity);
 			return "booking completed";
 		}

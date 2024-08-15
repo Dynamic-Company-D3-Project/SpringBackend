@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import Helpers.BookingStatus;
@@ -45,6 +46,10 @@ public class BookingEntity {
 	private LocalDate date;
 	@Column(name = "booking_time", nullable = false)
 	private LocalTime time;
+	
+	@OneToOne
+	@JoinColumn(name="address_id",nullable=false)
+	private AddressEntity addressId;
 	
 	
 }

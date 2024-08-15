@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringExclude;
@@ -48,11 +49,15 @@ public class OrdersEntity {
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	private String description;
-	@Column(name="order_rate", precision = 10, scale =2 )
-	private BigDecimal rate;
+	@Column(name="order_rate")
+	private Double rate;
 	@Column(name = "order_date", nullable = false)
 	private LocalDate date;
 	@Column(name = "order_time", nullable = false)
 	private LocalTime time;
+	
+	@OneToOne
+	@JoinColumn(name="address_id",nullable=false)
+	private AddressEntity addressId;
 	
 }

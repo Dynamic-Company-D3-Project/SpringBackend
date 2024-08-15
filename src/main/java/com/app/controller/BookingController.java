@@ -54,9 +54,8 @@ public class BookingController {
 	@Operation(summary = "book service")
 	public ResponseEntity<?> bookService(@RequestBody BookingPostDto bookingPostDto,@RequestHeader("Authorization") String authHeader,@PathVariable long id)
 	{
-		LocalDate date2 = LocalDate.parse(bookingPostDto.getDate());
-		LocalTime time2 = LocalTime.parse(bookingPostDto.getTime());
+		
 		String token = authHeader.substring(7);
-		return ResponseEntity.ok().body(bookingService.addBooking(id, token, date2, time2));
+		return ResponseEntity.ok().body(bookingService.addBooking(id, token, bookingPostDto));
 	}
 }
