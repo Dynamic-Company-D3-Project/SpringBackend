@@ -1,14 +1,10 @@
 package com.app.dto;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-import javax.persistence.Column;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
+import Helpers.AddressTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,4 +17,7 @@ public class BookingPostDto {
 	private String date;
     @DateTimeFormat(pattern = "HH:mm")
 	private String time;
+    
+    private AddressTypeEnum addressType;
+    
 }
