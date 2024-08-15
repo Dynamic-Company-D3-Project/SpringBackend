@@ -99,6 +99,7 @@ public class BookingServiceImpl implements BookingService {
 		ordersEntity.setSubcategory_id(bookingEntity.getSubcategory_id());
 		ordersEntity.setUserId(bookingEntity.getUserId());
 		ordersEntity.setStatus(OrderStatus.CANCELLED);
+		ordersEntity.setAddressId(bookingEntity.getAddressId());
 	    oDao.save(ordersEntity);
 		}
 		bookingDao.delete(bookingEntity);
