@@ -27,7 +27,6 @@ import com.app.dto.AddressPostDto;
 import com.app.dto.UserDto;
 import com.app.dto.UserLoginDto;
 import com.app.dto.UserPostDto;
-import com.app.mail.EmailService;
 
 import Helpers.AddressTypeEnum;
 
