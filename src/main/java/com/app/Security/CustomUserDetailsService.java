@@ -26,7 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         return user;
     }
-
     public UserDetails loadUserById(Long userId) {
     	UserEntity user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return user;

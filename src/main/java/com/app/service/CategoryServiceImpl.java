@@ -46,6 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
                 CategorySubDto dto = mapper.map(entity, CategorySubDto.class);
                 dto.setSubCategories(
                     entity.getSubCategories().stream()
+                     .filter(subEntity -> subEntity.getIsVisible()==1)
                         .map(subEntity -> mapper.map(subEntity, SubCategoryDto.class))
                         .collect(Collectors.toList())
                 );
@@ -55,6 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 	@Override
 	public CategorySubDto getSubCategoryById(Long id) {
+		
 		return  mapper.map(categoryDao.listofCategoryWithSub(id),CategorySubDto.class);	
 	}
 	

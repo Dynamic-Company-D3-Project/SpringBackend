@@ -65,16 +65,8 @@ public class CartServiceImpl implements CartService {
 					image(cart.getSubCategoryId().getImage())
 					.name(cart.getSubCategoryId().getCategoryName())
 					.build();
-			
-
-			
 		}).collect(Collectors.toList());
-		
-		
-		
-		
 	}
-
 	@Override
 	public String addCartitems(String token, Long id) {
 		Long userId = jwtHelper.getUserIdFromToken(token);

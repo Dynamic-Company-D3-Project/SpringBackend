@@ -54,7 +54,7 @@ public class BookingController {
 	@Operation(summary = "book service")
 	public ResponseEntity<?> bookService(@RequestBody BookingPostDto bookingPostDto,@RequestHeader("Authorization") String authHeader,@PathVariable long id)
 	{
-		
+		System.out.println(bookingPostDto);
 		String token = authHeader.substring(7);
 		return ResponseEntity.ok().body(bookingService.addBooking(id, token, bookingPostDto));
 	}
